@@ -2,6 +2,7 @@
 #define CARDS_H
 
 #include <stdint.h>
+
 typedef enum CARD_VALUE {
   KING,
   QUEEN,

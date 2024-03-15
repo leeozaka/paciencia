@@ -11,13 +11,12 @@ void deck_init(deck_t *deck) {
       i++;
     }
   }
-  deck->head = 52;
-  deck_shuffle(deck);
+  deck->head = CARD_COUNT - 1;
 }
 
 void deck_shuffle(deck_t *deck) {
-  for (int i = 0; i < 52; i++) {
-    int j = rand() % 52;
+  for (int i = 0; i < CARD_COUNT; i++) {
+    int j = rand() % CARD_COUNT;
     card_t t = deck->card[i];
     deck->card[i] = deck->card[j];
     deck->card[j] = t;

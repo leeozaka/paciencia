@@ -1,5 +1,6 @@
 #include "piles.h"
 #include "cards.h"
+#include "decks.h"
 
 #include <stdint.h>
 #include <stdio.h>
@@ -14,7 +15,7 @@ card_t pile_peek(pile_t p) { return p.card[p.head]; }
 
 uint8_t pile_empty(pile_t *p) { return p->head == -1; }
 
-uint8_t pile_full(pile_t *p) { return p->head == 51; }
+uint8_t pile_full(pile_t *p) { return p->head == CARD_COUNT - 1; }
 
 void pile_print(pile_t p, const char *t[], const char *s[]) {
   while (!pile_empty(&p)) {

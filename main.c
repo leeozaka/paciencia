@@ -26,6 +26,7 @@ const char *csuit_str_br[] = {"COPAS", "OUROS", "PAUS", "ESPADAS"};
 int main() {
   deck_t deck;
   pile_t table_decks[7];
+  pile_t game_decks[4];
 
   // inicializa o baralho ordenado e mistura
   deck_init(&deck);
