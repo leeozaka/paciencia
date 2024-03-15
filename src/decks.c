@@ -12,6 +12,7 @@ void deck_init(deck_t *deck) {
     }
   }
   deck->head = CARD_COUNT - 1;
+  deck_shuffle(deck);
 }
 
 void deck_shuffle(deck_t *deck) {

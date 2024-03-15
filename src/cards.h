@@ -4,19 +4,19 @@
 #include <stdint.h>
 
 typedef enum CARD_VALUE {
-  KING,
-  QUEEN,
-  JACK,
-  TEN,
-  NINE,
-  EIGHT,
-  SEVEN,
-  SIX,
-  FIVE,
-  FOUR,
-  THREE,
+  ACE,
   TWO,
-  ACES
+  THREE,
+  FOUR,
+  FIVE,
+  SIX,
+  SEVEN,
+  EIGHT,
+  NINE,
+  TEN,
+  JACK,
+  QUEEN,
+  KING
 } cvalue;
 
 typedef enum CARD_SUIT { HEART, DIAMONDS, CLUBS, SPADES } csuit;

@@ -13,20 +13,18 @@
 #include "./src/decks.h"
 #include "./src/piles.h"
 
-// const char *cvalue_str[] = {"KING",  "QUEEN", "JACK", "TEN",  "NINE",
-//                             "EIGHT", "SEVEN", "SIX",  "FIVE", "FOUR",
-//                             "THREE", "TWO",   "ACES"};
-// const char *csuit_str[] = {"HEARTS", "DIAMONDS", "CLUBS", "SPADES"};
+const char *cvalue_str_br[] = {"AS",     "DOIS", "TRES", "QUATRO", "CINCO",
+                               "SEIS",   "SETE", "OITO", "NOVE",   "DEZ",
+                               "VALETE", "DAMA", "REI"};
+const char *cvalue_str_br_short[] = {"A", "2", "3", "4", "5", "6", "7",
+                                     "8", "9", "X", "J", "Q", "K"};
 
-const char *cvalue_str_br[] = {"REI",  "DAMA", "VALETE", "DEZ",   "NOVE",
-                               "OITO", "SETE", "SEIS",   "CINCO", "QUATRO",
-                               "TRES", "DOIS", "AS"};
 const char *csuit_str_br[] = {"COPAS", "OUROS", "PAUS", "ESPADAS"};
+const char *csuit_str_br_short[] = {"C", "O", "P", "E"};
 
 int main() {
   deck_t deck;
-  pile_t table_decks[7];
-  pile_t game_decks[4];
+  pile_t table_decks[7], game_decks[4];
 
   // inicializa o baralho ordenado e mistura
   deck_init(&deck);
@@ -42,7 +40,7 @@ int main() {
   // imprime as pilhas
   for (int i = 0; i < 7; i++) {
     printf("Pilha %d\n", i + 1);
-    pile_print(table_decks[i], cvalue_str_br, csuit_str_br);
+    pile_print(table_decks[i], cvalue_str_br_short, csuit_str_br_short);
     printf("\n----------------\n");
   }
 
