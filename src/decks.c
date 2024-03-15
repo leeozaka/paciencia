@@ -1,34 +1,41 @@
 #include "decks.h"
 #include "cards.h"
-#include <stdint.h>
 #include <stdlib.h>
 
-void deck_init(card_t deck[]) {
+void deck_init(deck_t *deck) {
   int i = 0;
-
-  for (uint8_t s = 0; s < 4; s++) {
-    for (uint8_t r = 0; r < 13; r++) {
-      deck[i].suit = s;
-      deck[i].value = r;
+  for (int s = 0; s < 4; s++) {
+    for (int v = 0; v < 13; v++) {
+      deck->card[i].suit = s;
+      deck->card[i].value = v;
       i++;
     }
   }
+  deck->head = 52;
   deck_shuffle(deck);
 }
 
-void deck_shuffle(card_t deck[]) {
+void deck_shuffle(deck_t *deck) {
   for (int i = 0; i < 52; i++) {
     int j = rand() % 52;
-    card_t t = deck[i];
-    deck[i] = deck[j];
-    deck[j] = t;
+    card_t t = deck->card[i];
+    deck->card[i] = deck->card[j];
+    deck->card[j] = t;
   }
 }
 
-void deck_populate(pile_t decks[], card_t deck[]) {
+void deck_populate(deck_t *deck, pile_t table_deck[]) {
   for (int i = 0; i < 7; i++) {
     for (int j = 0; j < i + 1; j++) {
-      pile_push(&decks[i], deck[i + j]);
+      pile_push(&table_deck[i], deck_pop(deck));
     }
   }
 }
+
+card_t deck_pop(deck_t *deck) {
+  card_t c = deck->card[deck->head];
+  deck->head--;
+  return c;
+}
+
+card_t deck_get_card(deck_t deck) { return deck.card[deck.head]; }

@@ -1,5 +1,6 @@
 #include "piles.h"
 #include "cards.h"
+
 #include <stdint.h>
 #include <stdio.h>
 
@@ -9,7 +10,7 @@ void pile_push(pile_t *p, card_t c) { p->card[++p->head] = c; }
 
 card_t pile_pop(pile_t *p) { return p->card[p->head--]; }
 
-card_t pile_peek(pile_t *p) { return p->card[p->head]; }
+card_t pile_peek(pile_t p) { return p.card[p.head]; }
 
 uint8_t pile_empty(pile_t *p) { return p->head == -1; }
 
@@ -77,46 +78,5 @@ void pile_print(pile_t p, const char *t[], const char *s[]) {
 //
 //   (*p)->head = NULL;
 //   (*p)->size = 0;
-// }
-//
-
-//
-// void pile_shuffle(pile_t **p) {
-//   data_t *n = (*p)->head;
-//   data_t *t = NULL;
-//   card_t c;
-//   uint64_t i, j, k;
-//
-//   for (i = 0; i < (*p)->size; i++) {
-//     j = rand() % (*p)->size;
-//     t = (*p)->head;
-//     for (k = 0; k < j; k++) {
-//       t = t->next;
-//     }
-//     c = n->card;
-//     n->card = t->card;
-//     t->card = c;
-//     n = n->next;
-//   }
-// }
-//
-// void pile_sort(pile_t **p) {
-//   data_t *n = (*p)->head;
-//   data_t *t = NULL;
-//   card_t c;
-//   uint64_t i, j;
-//
-//   for (i = 0; i < (*p)->size; i++) {
-//     t = n->next;
-//     for (j = i + 1; j < (*p)->size; j++) {
-//       if (n->card.value > t->card.value) {
-//         c = n->card;
-//         n->card = t->card;
-//         t->card = c;
-//       }
-//       t = t->next;
-//     }
-//     n = n->next;
-//   }
 // }
 //

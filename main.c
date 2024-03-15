@@ -24,27 +24,31 @@ const char *cvalue_str_br[] = {"REI",  "DAMA", "VALETE", "DEZ",   "NOVE",
 const char *csuit_str_br[] = {"COPAS", "OUROS", "PAUS", "ESPADAS"};
 
 int main() {
-  card_t deck[52];
-  pile_t decks[7];
-  // pile_t *stacks[4];
+  deck_t deck;
+  pile_t table_decks[7];
 
   // inicializa o baralho ordenado e mistura
-  deck_init(deck);
+  deck_init(&deck);
 
   // inicializa as pilhas
   for (int i = 0; i < 7; i++) {
-    pile_init(&decks[i]);
+    pile_init(&table_decks[i]);
   }
 
   // inicializa as pilhas do jogo
-  deck_populate(decks, deck);
+  deck_populate(&deck, table_decks);
 
   // imprime as pilhas
   for (int i = 0; i < 7; i++) {
     printf("Pilha %d\n", i + 1);
-    pile_print(decks[i], cvalue_str_br, csuit_str_br);
+    pile_print(table_decks[i], cvalue_str_br, csuit_str_br);
     printf("\n----------------\n");
   }
+
+  // imprime a carta do topo do baralho
+  card_t c = deck_get_card(deck);
+  printf("A carta do topo do baralho restando eh: %s %s",
+         cvalue_str_br[c.value], csuit_str_br[c.suit]);
 
   _getch();
   return 0;
