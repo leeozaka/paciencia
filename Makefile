@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS= -O2 -Wall -Wextra
+CFLAGS= -O2 -Wall -Wextra -pedantic
 FILES= main.c c.c piles.c cards.c decks.c
 FILENAME = paciencia.exe
 
