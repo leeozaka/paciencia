@@ -34,13 +34,13 @@ int user_get_input() {
 }
 
 // get user input and return the value fixed
-inline uint8_t user_input_handler() {
+inline int8_t user_input_handler() {
   uint8_t i;
   fflush(stdin);
 
   i = _getche();
   if (!isdigit(i)) {
-    return 0;
+    return -1;
   }
 
   i = (tolower(i)) - 48;

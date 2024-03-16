@@ -12,7 +12,7 @@ enum USER_INPUT { UI_EXIT, UI_PICK, UI_LOOK, UI_DECK, UI_INVALID };
 enum CHOICES { C_ERR, C_GAME, C_TABLE };
 
 int user_get_input();
-uint8_t user_input_handler();
+int8_t user_input_handler();
 uint8_t user_choice_handler();
 uint8_t user_card_handler(int pe, pile_t *table_decks);
 uint8_t user_dest_handler_game(int pd, pile_t *game_decks, card_t c);

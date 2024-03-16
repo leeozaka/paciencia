@@ -7,7 +7,6 @@
 // Leonardo Neves, 262310406
 
 #include <conio.h>
-#include <ctype.h>
 #include <stdio.h>
 
 // #include "src/c.h"
@@ -91,12 +90,6 @@ int main() {
 
       printf("Selecione um deck: ");
       pe = user_input_handler();
-
-      if (!pe) {
-        printf("\nDeck invalido\n");
-        _getch();
-        break;
-      }
 
       if (user_card_handler(pe, table_decks)) {
         printf("\nDeck invalido\n");
