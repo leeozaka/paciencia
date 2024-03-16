@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include <stdint.h>
 
+// get user input and return the value fixed
 uint8_t user_choice_handler() {
   fflush(stdin);
   switch (tolower(_getch())) {
@@ -17,6 +18,7 @@ uint8_t user_choice_handler() {
   }
 }
 
+// get user input and return the value fixed
 int user_get_input() {
   fflush(stdin);
   switch (tolower(_getch())) {
@@ -35,16 +37,25 @@ int user_get_input() {
 inline uint8_t user_input_handler() {
   uint8_t i;
   fflush(stdin);
-  i = (tolower(_getch())) - 48;
+
+  i = _getche();
+  if (!isdigit(i)) {
+    return 0;
+  }
+
+  i = (tolower(i)) - 48;
   i -= 1;
+
   return i;
 }
 
 // check if user got from a valid pile position
 // then check if the pile is empty
 inline uint8_t user_card_handler(int pe, pile_t *table_decks) {
-  if ((pe < 0 || pe > 6) && !pile_empty(&table_decks[pe]))
+  if ((pe < 0 || pe > 6) || pile_empty(&table_decks[pe])) {
     return 1;
+  }
+
   return 0;
 }
 
@@ -65,7 +76,7 @@ inline uint8_t user_dest_handler_game(int pd, pile_t *game_decks, card_t c) {
 }
 
 inline uint8_t user_dest_handler_table(int pd, pile_t *table_decks, card_t c) {
-  if (pd < 1 || pd > 4)
+  if (pd < 0 || pd > 6)
     return 1;
 
   if (pile_empty(&table_decks[pd]))

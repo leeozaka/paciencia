@@ -44,36 +44,37 @@ int main() {
 
   for (int i = 0; i < 7; i++) {
     card_t c = pile_peek(table_decks[i]);
-    printf("Pilha %d: %s%s\n", i + 1, cvalue_str_br_short[c.value],
+    printf("Deck %d: %s%s\n", i + 1, cvalue_str_br_short[c.value],
            csuit_str_br_short[c.suit]);
   }
 
   // main game loop here
   while (1) {
+    int pe, pd;
     system("cls");
-    printf("Pilhas de jogo\n");
+    printf("Decks de jogo\n");
 
     for (int i = 0; i < 4; i++) {
       if (pile_empty(&game_decks[i])) {
-        printf("Pilha %d: vazia\n", i + 1);
+        printf("Deck %d: vazio\n", i + 1);
         continue;
       }
 
       card_t c = pile_peek(game_decks[i]);
-      printf("Pilha %d: %s%s\n", i + 1, cvalue_str_br_short[c.value],
+      printf("Deck %d: %s%s\n", i + 1, cvalue_str_br_short[c.value],
              csuit_str_br_short[c.suit]);
     }
     printf("\n");
 
-    printf("Pilhas de mesa\n");
+    printf("Decks de mesa\n");
     for (int i = 0; i < 7; i++) {
       if (pile_empty(&table_decks[i])) {
-        printf("Pilha %d: vazia\n", i + 1);
+        printf("Deck %d: vazio\n", i + 1);
         continue;
       }
 
       card_t c = pile_peek(table_decks[i]);
-      printf("Pilha %d: %s%s\n", i + 1, cvalue_str_br_short[c.value],
+      printf("Deck %d: %s%s\n", i + 1, cvalue_str_br_short[c.value],
              csuit_str_br_short[c.suit]);
     }
     printf("\n");
@@ -87,27 +88,37 @@ int main() {
 
     // user input pick
     case UI_PICK:
-      int pe, pd;
-      printf("Selecione uma pilha: \n");
+
+      printf("Selecione um deck: ");
       pe = user_input_handler();
 
-      if (user_card_handler(pe, table_decks)) {
-        printf("Pilha invalida\n");
+      if (!pe) {
+        printf("\nDeck invalido\n");
         _getch();
         break;
       }
 
+      if (user_card_handler(pe, table_decks)) {
+        printf("\nDeck invalido\n");
+        _getch();
+        break;
+      }
+
+      // store the card to be moved
       card_t c = pile_peek(table_decks[pe]);
 
-      printf("[1]-Pilha de jogo - [2]-Pilha de mesa\n");
+      printf("\nCarta selecionada: %s de %s\n", cvalue_str_br[c.value],
+             csuit_str_br[c.suit]);
+
+      printf("[1]-Deck de jogo - [2]-Deck de mesa\n");
 
       switch (user_choice_handler()) {
       case C_GAME:
-        printf("Selecione uma pilha de jogo: ");
+        printf("Selecione um deck de jogo: ");
         pd = user_input_handler();
 
         if (user_dest_handler_game(pd, game_decks, c)) {
-          printf("Pilha invalida\n");
+          printf("Deck invalida\n");
           _getch();
           break;
         }
@@ -116,11 +127,11 @@ int main() {
         break;
 
       case C_TABLE:
-        printf("Selecione uma pilha de mesa: ");
+        printf("Selecione um deck de mesa: ");
         pd = user_input_handler();
 
         if (user_dest_handler_table(pd, table_decks, c)) {
-          printf("Pilha invalida\n");
+          printf("Deck invalida\n");
           _getch();
           break;
         }
