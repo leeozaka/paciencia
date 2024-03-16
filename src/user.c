@@ -1,31 +1,78 @@
 #include "user.h"
 #include "piles.h"
+
+#include "c.h"
+#include <ctype.h>
 #include <stdint.h>
 
+uint8_t user_choice_handler() {
+  fflush(stdin);
+  switch (tolower(_getch())) {
+  case '1':
+    return C_GAME;
+  case '2':
+    return C_TABLE;
+  default:
+    return C_ERR;
+  }
+}
+
 int user_get_input() {
-  char input;
-  printf("Digite um comando: ");
-
-  input = fgetc(stdin);
-
-  switch (input) {
+  fflush(stdin);
+  switch (tolower(_getch())) {
   case 'q':
     return UI_EXIT;
   case 'm':
     return UI_PICK;
   case 'l':
     return UI_LOOK;
-  case 'd':
-    return UI_DECK;
   default:
     return UI_INVALID;
   }
 }
 
+// get user input and return the value fixed
+inline uint8_t user_input_handler() {
+  uint8_t i;
+  fflush(stdin);
+  i = (tolower(_getch())) - 48;
+  i -= 1;
+  return i;
+}
+
+// check if user got from a valid pile position
+// then check if the pile is empty
 inline uint8_t user_card_handler(int pe, pile_t *table_decks) {
-  if (pe < 1 || pe > 7 && !pile_empty(&table_decks[pe - 1]))
+  if ((pe < 0 || pe > 6) && !pile_empty(&table_decks[pe]))
+    return 1;
+  return 0;
+}
+
+// check if user got a valid pile position
+// check if the pile is empty
+// check if the card order is valid
+inline uint8_t user_dest_handler_game(int pd, pile_t *game_decks, card_t c) {
+  if (pd < 0 || pd > 3)
+    return 1;
+
+  if (pile_empty(&game_decks[pd]))
     return 0;
+
+  if (c.value == pile_peek(game_decks[pd]).value - 1)
+    return 0;
+
   return 1;
 }
 
-inline uint8_t user_dest_handler_game(int pd, pile_t *game_decks) {}
+inline uint8_t user_dest_handler_table(int pd, pile_t *table_decks, card_t c) {
+  if (pd < 1 || pd > 4)
+    return 1;
+
+  if (pile_empty(&table_decks[pd]))
+    return 0;
+
+  if (c.value == pile_peek(table_decks[pd]).value - 1)
+    return 0;
+
+  return 1;
+}

@@ -39,3 +39,5 @@ card_t deck_pop(deck_t *deck) {
 }
 
 card_t deck_get_card(deck_t deck) { return deck.card[deck.head]; }
+
+uint8_t deck_is_empty(deck_t deck) { return deck.head == -1; }
