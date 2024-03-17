@@ -1,4 +1,5 @@
 #ifndef DECKS_H
+#define DECKS_H
 
 #include "cards.h"
 #include "piles.h"

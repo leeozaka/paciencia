@@ -29,17 +29,7 @@ int main() {
   deck_t deck;
   pile_t table_decks[7], game_decks[4];
 
-  // inicializa o baralho ordenado e mistura
-  deck_init(&deck);
-
-  // inicializa as pilhas
-  for (int i = 0; i < 7; i++)
-    pile_init(&table_decks[i]);
-  for (int i = 0; i < 4; i++)
-    pile_init(&game_decks[i]);
-
-  // inicializa as pilhas do jogo
-  deck_populate(&deck, table_decks);
+  bootstrap(&deck, table_decks, game_decks);
 
   for (int i = 0; i < 7; i++) {
     card_t c = pile_peek(table_decks[i]);
