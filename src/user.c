@@ -1,14 +1,29 @@
 #include "user.h"
+#include "decks.h"
 #include "piles.h"
 
 #include "c.h"
 #include <ctype.h>
 #include <stdint.h>
 
+uint8_t user_deck_input_handler() {
+  fflush(stdin);
+  switch (tolower(_getche())) {
+  case '1':
+    return DECK_GAME;
+  case '2':
+    return DECK_TABLE;
+  case '3':
+    return DECK_DISCARD;
+  default:
+    return DECK_ERR;
+  }
+}
+
 // get user input and return the value fixed
 uint8_t user_choice_handler() {
   fflush(stdin);
-  switch (tolower(_getch())) {
+  switch (tolower(_getche())) {
   case '1':
     return C_GAME;
   case '2':
@@ -25,7 +40,7 @@ uint8_t user_choice_handler() {
 // get user input and return the value fixed
 int user_get_input() {
   fflush(stdin);
-  switch (tolower(_getch())) {
+  switch (tolower(_getche())) {
   case 'q':
     return UI_EXIT;
   case 'm':
@@ -55,10 +70,18 @@ inline int8_t user_input_handler() {
 
 // check if user got from a valid pile position
 // then check if the pile is empty
-inline uint8_t user_card_handler(int pe, pile_t *table_decks) {
-  if ((pe < 0 || pe > 6) || pile_empty(&table_decks[pe])) {
+inline uint8_t user_game_card_handler(int pe, pile_t *game_decks) {
+  if ((pe < 0 || pe > 3) || pile_empty(&game_decks[pe]))
     return 1;
-  }
+
+  return 0;
+}
+
+// check if user got from a valid pile position
+// then check if the pile is empty
+inline uint8_t user_table_card_handler(int pe, pile_t *table_decks) {
+  if ((pe < 0 || pe > 6) || pile_empty(&table_decks[pe]))
+    return 1;
 
   return 0;
 }

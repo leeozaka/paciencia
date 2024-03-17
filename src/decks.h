@@ -6,6 +6,8 @@
 
 #define CARD_COUNT 52
 
+enum DECKS { DECK_GAME, DECK_TABLE, DECK_DISCARD, DECK_ERR };
+
 typedef struct DECK_TYPE {
   card_t card[CARD_COUNT];
   int head;

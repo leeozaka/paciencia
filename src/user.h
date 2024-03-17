@@ -14,7 +14,9 @@ enum CHOICES { C_ERR, C_GAME, C_TABLE, C_YES, C_NO };
 int user_get_input();
 int8_t user_input_handler();
 uint8_t user_choice_handler();
-uint8_t user_card_handler(int pe, pile_t *table_decks);
+uint8_t user_deck_input_handler();
+uint8_t user_table_card_handler(int pe, pile_t *table_decks);
+uint8_t user_game_card_handler(int pe, pile_t *game_decks);
 uint8_t user_dest_handler_game(int pd, pile_t *game_decks, card_t c);
 uint8_t user_dest_handler_table(int pd, pile_t *table_decks, card_t c);
 
