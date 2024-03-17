@@ -9,7 +9,7 @@
 #include "piles.h"
 
 enum USER_INPUT { UI_EXIT, UI_PICK, UI_LOOK, UI_DECK, UI_INVALID };
-enum CHOICES { C_ERR, C_GAME, C_TABLE };
+enum CHOICES { C_ERR, C_GAME, C_TABLE, C_YES, C_NO };
 
 int user_get_input();
 int8_t user_input_handler();

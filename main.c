@@ -27,10 +27,10 @@ const char *csuit_str_br_short[] = {"C", "O", "P", "E"};
 
 int main() {
   deck_t deck;
-  pile_t table_decks[7], game_decks[4];
+  pile_t table_decks[7], game_decks[4], discard_deck;
 
   // init the game
-  bootstrap(&deck, table_decks, game_decks);
+  bootstrap(&deck, table_decks, game_decks, &discard_deck);
 
   for (int i = 0; i < 7; i++) {
     card_t c = pile_peek(table_decks[i]);
@@ -42,7 +42,7 @@ int main() {
   while (1) {
     int pe, pd;
     system("cls");
-    printf("Decks de jogo\n");
+    printf("[1] Decks de jogo\n");
 
     for (int i = 0; i < 4; i++) {
       if (pile_empty(&game_decks[i])) {
@@ -56,7 +56,7 @@ int main() {
     }
     printf("\n");
 
-    printf("Decks de mesa\n");
+    printf("[2] Decks de mesa\n");
     for (int i = 0; i < 7; i++) {
       if (pile_empty(&table_decks[i])) {
         printf("Deck %d: vazio\n", i + 1);
@@ -69,7 +69,16 @@ int main() {
     }
     printf("\n");
 
+    if (pile_empty(&discard_deck)) {
+      printf("[3] Baralho de descarte: vazio\n");
+    } else {
+      card_t c = pile_peek(discard_deck);
+      printf("[3] Baralho de descarte: %s de %s\n", cvalue_str_br[c.value],
+             csuit_str_br[c.suit]);
+    }
+
     printf("Comandos: [M]over O[l]har [Q]uit\n");
+
     // event handler
     switch (user_get_input()) {
     case UI_EXIT:
@@ -137,7 +146,10 @@ int main() {
       c = deck_get_card(deck);
       printf("Carta do topo do baralho: %s de %s\n", cvalue_str_br[c.value],
              csuit_str_br[c.suit]);
-      _getch();
+      printf("Pegar carta? [S]im [N]ao\n");
+      if (user_choice_handler() == C_YES) {
+        pile_push(&discard_deck, deck_pop(&deck));
+      }
       break;
 
     case UI_INVALID:

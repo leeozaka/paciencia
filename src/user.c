@@ -13,6 +13,10 @@ uint8_t user_choice_handler() {
     return C_GAME;
   case '2':
     return C_TABLE;
+  case 's':
+    return C_YES;
+  case 'n':
+    return C_NO;
   default:
     return C_ERR;
   }
