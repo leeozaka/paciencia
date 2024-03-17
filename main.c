@@ -29,6 +29,7 @@ int main() {
   deck_t deck;
   pile_t table_decks[7], game_decks[4];
 
+  // init the game
   bootstrap(&deck, table_decks, game_decks);
 
   for (int i = 0; i < 7; i++) {
@@ -77,7 +78,6 @@ int main() {
 
     // user input pick
     case UI_PICK:
-
       printf("Selecione um deck: ");
       pe = user_input_handler();
 
@@ -114,7 +114,7 @@ int main() {
         pd = user_input_handler();
 
         if (user_dest_handler_table(pd, table_decks, c)) {
-          printf("Deck invalida\n");
+          printf("\nDeck invalida\n");
           _getch();
           break;
         }
