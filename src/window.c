@@ -7,6 +7,13 @@
 #include "decks.h"
 #include "window.h"
 
+#define TL 218
+#define TR 191
+#define BL 192
+#define BR 217
+#define ROW 196
+#define COL 179
+
 const info_t expect = {0, 0, 0, 0, 131, 35};
 
 const card_placing_t cards[] = {{6, 2},   {68, 2},  {82, 2},  {96, 2},
@@ -77,9 +84,6 @@ void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
 
   card_t c;
 
-  char col = '|';
-  char row = '-';
-
   gettextinfo(&w);
 
   system("cls");
@@ -87,33 +91,42 @@ void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
   padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
   padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
 
+  // draw cantinhos
+  gotoxy(padding_x, padding_y);
+  fputc(TL, stdout);
+  gotoxy(padding_x + expect.screenwidth, padding_y);
+  fputc(TR, stdout);
+  gotoxy(padding_x, padding_y + expect.screenheight);
+  fputc(BL, stdout);
+  gotoxy(padding_x + expect.screenwidth, padding_y + expect.screenheight);
+  fputc(BR, stdout);
+
   // draw col
-  for (int i = 1; i <= expect.screenheight; i++) {
+  for (int i = 1; i <= expect.screenheight - 1; i++) {
     gotoxy(padding_x, i + padding_y);
-    fputc(col, stdout);
+    fputc(COL, stdout);
 
     gotoxy(padding_x + expect.screenwidth, i + padding_y);
-    fputc(col, stdout);
+    fputc(COL, stdout);
   }
 
-  // draw row
-  for (int i = 1; i <= expect.screenwidth; i++) {
+  for (int i = 1; i <= expect.screenwidth - 1; i++) {
     gotoxy(i + padding_x, padding_y);
-    fputc(row, stdout);
+    fputc(ROW, stdout);
 
     gotoxy(i + padding_x, padding_y + expect.screenheight);
-    fputc(row, stdout);
+    fputc(ROW, stdout);
   }
 
   // draw cards: discard_deck
   int i = 0;
-  gotoxy(cards[i].x + padding_x, cards[i].y + padding_y);
+  gotoxy(cards[i].x + padding_x + 1, cards[i].y + padding_y);
 
   if (pile_empty(discard_deck)) {
     printf("Empty");
   } else {
     c = pile_peek(*discard_deck);
-    printf("%s %s", cval[c.value], csuit[c.suit]);
+    printf("%s      %s", cval[c.value], csuit[c.suit]);
   }
 
   // draw cards: game_decks
@@ -123,7 +136,7 @@ void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
       printf("Empty");
     } else {
       c = pile_peek(game_decks[i - 1]);
-      printf("%s %s", cval[c.value], csuit[c.suit]);
+      printf("%s      %s", cval[c.value], csuit[c.suit]);
     }
   }
 
@@ -136,11 +149,12 @@ void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
       c = pile_peek(table_decks[i - 5]);
       for (int j = 0; j < game_decks[i - 1].head; j++) {
         gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + j);
-        printf("-----");
+        printf("%c%c%c%c%c%c%c%c%c%c%c", TL, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+               ROW, ROW, TR);
       }
-      gotoxy(cards[i].x + padding_x,
+      gotoxy(cards[i].x + padding_x + 1,
              cards[i].y + padding_y + game_decks[i - 1].head);
-      printf("%s %s", cval[c.value], csuit[c.suit]);
+      printf("%s      %s", cval[c.value], csuit[c.suit]);
     }
   }
   gotoxy(padding_x + 1, padding_y + expect.screenheight - 1);
@@ -179,7 +193,7 @@ void window_game_card_highlight(pile_t p, enum CARDS_PLACE place, COLORS color,
 
   gotoxy(cards[place].x + padding_x, cards[place].y + padding_y);
   textcolor(color);
-  printf("%s %s", cval[c.value], csuit[c.suit]);
+  printf("%s      %s", cval[c.value], csuit[c.suit]);
   textcolor(WHITE);
 }
 
@@ -193,9 +207,9 @@ void window_table_card_highlight(pile_t p, enum CARDS_PLACE place, COLORS color,
   uint8_t padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
   uint8_t padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
 
-  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + p.head);
+  gotoxy(cards[place].x + padding_x + 1, cards[place].y + padding_y + p.head);
   textcolor(color);
-  printf("%s %s", cval[c.value], csuit[c.suit]);
+  printf("%s      %s", cval[c.value], csuit[c.suit]);
   textcolor(WHITE);
 }
 
@@ -210,9 +224,9 @@ void window_discard_card_highlight(pile_t p, enum CARDS_PLACE place,
   uint8_t padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
   uint8_t padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
 
-  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y);
+  gotoxy(cards[place].x + padding_x + 1, cards[place].y + padding_y);
   textcolor(color);
-  printf("%s %s", cval[c.value], csuit[c.suit]);
+  printf("%s      %s", cval[c.value], csuit[c.suit]);
   textcolor(WHITE);
 }
 
