@@ -33,9 +33,15 @@ typedef struct CARD_SIZE {
   uint8_t height;
 } card_size_t;
 
+typedef struct WINDOW_TEXT_POS {
+  uint8_t x;
+  uint8_t y;
+} wtext;
+
 info_t bootstrap_window();
 uint8_t window_verify();
 void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
                  const char **cval, const char **csuit);
+void window_print_msg(const char *msg, COLORS color);
 
 #endif

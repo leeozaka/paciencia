@@ -1,21 +1,27 @@
 #include <corecrt.h>
-// #include <stdio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <wchar.h>
 
 #include "c.h"
 #include "decks.h"
 #include "window.h"
 
-const info_t expect = {0, 0, 0, 0, 130, 34};
+const info_t expect = {0, 0, 0, 0, 131, 35};
 
-const card_placing_t cards[] = {{6, 2},   {68, 2},  {83, 2},  {98, 2},
-                                {107, 2}, {28, 11}, {42, 11}, {56, 11},
-                                {67, 11}, {85, 11}, {99, 11}, {107, 11}};
+const card_placing_t cards[] = {{6, 2},   {68, 2},  {82, 2},  {96, 2},
+                                {110, 2}, {28, 11}, {41, 11}, {54, 11},
+                                {67, 11}, {80, 11}, {93, 11}, {106, 11}};
 
 const card_size_t card_size = {12, 6};
+
+const struct errtext {
+  char *msg;
+  char *confirmdialog;
+  char *msg2;
+} errtext = {"Por favor, aumente a resolucao da tela para 130x40 ou mais",
+             "Pressione qualquer tecla para atualizar",
+             "Pressione 'q' para sair"};
 
 info_t bootstrap_window() {
   system("title Solitaire");
@@ -30,24 +36,20 @@ info_t bootstrap_window() {
       for (int i = 0; i < 3; i++)
         flashbackground(RED, 100);
 
-      char *msgres =
-          "Por favor, aumente a resolucao da tela para 130x40 ou mais";
-      char *confirmDialog = "Pressione qualquer tecla para atualizar";
-      char *msg = "Pressione 'q' para sair";
-      int x = (window.screenwidth - strlen(msgres)) / 2;
+      int x = (window.screenwidth - strlen(errtext.msg)) / 2;
       int y = window.screenheight / 2;
       textcolor(RED);
       gotoxy(x, y);
-      cputs(msgres);
+      cputs(errtext.confirmdialog);
       textcolor(WHITE);
-      x = (window.screenwidth - strlen(confirmDialog)) / 2;
+      x = (window.screenwidth - strlen(errtext.confirmdialog)) / 2;
       y++;
       gotoxy(x, y);
-      cputs(confirmDialog);
-      x = (window.screenwidth - strlen(msg)) / 2;
+      cputs(errtext.confirmdialog);
+      x = (window.screenwidth - strlen(errtext.msg)) / 2;
       y++;
       gotoxy(x, y);
-      cputs(msg);
+      cputs(errtext.msg);
       gettextinfo(&window);
       if (_getch() == 'q') {
         system("cls");
@@ -132,9 +134,35 @@ void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
       printf("Empty");
     } else {
       c = pile_peek(table_decks[i - 5]);
+      for (int j = 0; j < game_decks[i - 1].head; j++) {
+        gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + j);
+        printf("-----");
+      }
+      gotoxy(cards[i].x + padding_x,
+             cards[i].y + padding_y + game_decks[i - 1].head);
       printf("%s %s", cval[c.value], csuit[c.suit]);
     }
   }
-
   gotoxy(padding_x + 1, padding_y + expect.screenheight - 1);
+}
+
+void window_print_msg(const char *msg, COLORS color) {
+  info_t w;
+  gettextinfo(&w);
+
+  wtext wt = {2, 33};
+
+  uint8_t padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
+  uint8_t padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
+
+  // clearline
+  for (int i = wt.x + padding_x; i < expect.screenwidth; i++) {
+    textbackground(DARK_GREY);
+    gotoxy(i + padding_x, 33 + padding_y);
+    fputc(' ', stdout);
+  }
+
+  textcolor(color);
+  gotoxy(wt.x + padding_x, wt.y + padding_y);
+  cputs(msg);
 }

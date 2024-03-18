@@ -6,14 +6,13 @@
 
 // Leonardo Neves, 262310406
 
-// #include "src/c.h"
+#include "src/c.h"
 #include "src/cards.h"
 #include "src/decks.h"
 #include "src/game.h"
 #include "src/piles.h"
 #include "src/user.h"
 #include "src/window.h"
-#include <locale.h>
 
 const char *cvalue_str_br[] = {"AS",     "DOIS", "TRES", "QUATRO", "CINCO",
                                "SEIS",   "SETE", "OITO", "NOVE",   "DEZ",
@@ -40,6 +39,8 @@ int main() {
 
   // main game loop here
   while (1) {
+    textbackground(BLACK);
+    textcolor(WHITE);
 
     // check if the window is valid
     if (!window_verify())
@@ -53,51 +54,14 @@ int main() {
     // screen update here
     window_draw(table_decks, game_decks, &discard_deck, cvalue_str_br_short,
                 csuit_str_br_short);
-    _getch();
 
     int pe = 0, pd = 0;
-    system("cls");
-    printf("[1] Decks de jogo\n");
-
-    for (int i = 0; i < 4; i++) {
-      if (pile_empty(&game_decks[i])) {
-        printf("Deck %d: vazio\n", i + 1);
-        continue;
-      }
-
-      c = pile_peek(game_decks[i]);
-      printf("Deck %d: %s%s\n", i + 1, cvalue_str_br_short[c.value],
-             csuit_str_br_short[c.suit]);
-    }
-    printf("\n");
-
-    printf("[2] Decks de mesa\n");
-    for (int i = 0; i < 7; i++) {
-      if (pile_empty(&table_decks[i])) {
-        printf("Deck %d: vazio\n", i + 1);
-        continue;
-      }
-
-      c = pile_peek(table_decks[i]);
-      printf("Deck %d: %s%s\n", i + 1, cvalue_str_br_short[c.value],
-             csuit_str_br_short[c.suit]);
-    }
-    printf("\n");
-
-    if (pile_empty(&discard_deck)) {
-      printf("[3] Baralho de descarte: vazio\n");
-    } else {
-      c = pile_peek(discard_deck);
-      printf("[3] Baralho de descarte: %s de %s\n", cvalue_str_br[c.value],
-             csuit_str_br[c.suit]);
-    }
-
-    printf("Comandos: [M]over O[l]har [Q]uit: ");
+    window_print_msg("Comandos: [M]over O[l]har [Q]uit: ", WHITE);
 
     // event handler
     switch (user_get_input()) {
     case UI_CHEAT:
-      printf("\nCheat code\n");
+      window_print_msg("Cheat code!", PURPLE);
       ui_cheat_handler(game_decks);
       _getch();
       continue;
@@ -107,15 +71,17 @@ int main() {
 
     // user input pick
     case UI_PICK:
-      printf("\n[1] Deck de jogo, [2] Deck de mesa, [3] Baralho de descarte: ");
+      window_print_msg(
+          "[1] Deck de jogo, [2] Deck de mesa, [3] Baralho de descarte: ",
+          WHITE);
       uint8_t n = user_deck_input_handler();
       switch (n) {
       case DECK_GAME:
-        printf("\nSelecione um deck de jogo: ");
+        window_print_msg("Selecione um deck de jogo: ", WHITE);
         pe = user_input_handler();
 
         if (user_game_card_handler(pe, game_decks)) {
-          printf("\nDeck invalido\n");
+          window_print_msg("Deck invalido", RED);
           _getch();
           continue;
         }
@@ -128,11 +94,11 @@ int main() {
         break;
 
       case DECK_TABLE:
-        printf("\nSelecione um deck de mesa: ");
+        window_print_msg("Selecione um deck de mesa: ", WHITE);
         pe = user_input_handler();
 
         if (user_table_card_handler(pe, table_decks)) {
-          printf("\nDeck invalido\n");
+          window_print_msg("Deck invalido", RED);
           _getch();
           continue;
         }
