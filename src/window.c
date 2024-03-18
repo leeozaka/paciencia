@@ -166,3 +166,77 @@ void window_print_msg(const char *msg, COLORS color) {
   gotoxy(wt.x + padding_x, wt.y + padding_y);
   cputs(msg);
 }
+
+void window_game_card_highlight(pile_t p, enum CARDS_PLACE place, COLORS color,
+                                const char **cval, const char **csuit) {
+  info_t w;
+  gettextinfo(&w);
+
+  card_t c = pile_peek(p);
+
+  uint8_t padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
+  uint8_t padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y);
+  textcolor(color);
+  printf("%s %s", cval[c.value], csuit[c.suit]);
+  textcolor(WHITE);
+}
+
+void window_table_card_highlight(pile_t p, enum CARDS_PLACE place, COLORS color,
+                                 const char **cval, const char **csuit) {
+  info_t w;
+  gettextinfo(&w);
+
+  card_t c = pile_peek(p);
+
+  uint8_t padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
+  uint8_t padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + p.head);
+  textcolor(color);
+  printf("%s %s", cval[c.value], csuit[c.suit]);
+  textcolor(WHITE);
+}
+
+void window_discard_card_highlight(pile_t p, enum CARDS_PLACE place,
+                                   COLORS color, const char **cval,
+                                   const char **csuit) {
+  info_t w;
+  gettextinfo(&w);
+
+  card_t c = pile_peek(p);
+
+  uint8_t padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
+  uint8_t padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y);
+  textcolor(color);
+  printf("%s %s", cval[c.value], csuit[c.suit]);
+  textcolor(WHITE);
+}
+
+void window_deck_peek_handler(card_t c, COLORS color, const char **cval,
+                              const char **csuit) {
+  info_t w;
+  gettextinfo(&w);
+
+  wtext wt = {2, 33};
+
+  uint8_t padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
+  uint8_t padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
+
+  // clearline
+  for (int i = wt.x + padding_x; i < expect.screenwidth; i++) {
+    textbackground(DARK_GREY);
+    gotoxy(i + padding_x, 33 + padding_y);
+    fputc(' ', stdout);
+  }
+
+  textcolor(color);
+  gotoxy(wt.x + padding_x, wt.y + padding_y);
+
+  printf("Carta do topo do baralho: %s de %s", cval[c.value], csuit[c.suit]);
+  gotoxy(wt.x + padding_x, wt.y + 1 + padding_y);
+  printf("Pegar carta? [S]im [N]ao\n");
+}

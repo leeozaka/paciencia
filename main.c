@@ -67,6 +67,7 @@ int main() {
       continue;
 
     case UI_EXIT:
+      system("cls");
       exit(1);
 
     // user input pick
@@ -89,8 +90,8 @@ int main() {
         // store the card to be moved
         c = pile_peek(table_decks[pe]);
 
-        printf("\nCarta selecionada: %s de %s", cvalue_str_br[c.value],
-               csuit_str_br[c.suit]);
+        window_game_card_highlight(game_decks[pe], GAME_1 + pe, GREEN,
+                                   cvalue_str_br_short, csuit_str_br_short);
         break;
 
       case DECK_TABLE:
@@ -106,33 +107,36 @@ int main() {
         // store the card to be moved
         c = pile_peek(table_decks[pe]);
 
-        printf("\nCarta selecionada: %s de %s", cvalue_str_br[c.value],
-               csuit_str_br[c.suit]);
+        window_table_card_highlight(table_decks[pe], TABLE_1 + pe, GREEN,
+                                    cvalue_str_br_short, csuit_str_br_short);
+
         break;
 
       case DECK_DISCARD:
         if (pile_empty(&discard_deck)) {
-          printf("\nBaralho de descarte vazio!\n");
+          window_print_msg("Baralho de descarte vazio!", RED);
           _getch();
           continue;
         }
 
         c = pile_peek(discard_deck);
+        window_discard_card_highlight(discard_deck, DECK, GREEN,
+                                      cvalue_str_br_short, csuit_str_br_short);
         break;
 
       case DECK_ERR:
       default:
-        printf("\nComando invalido\n");
+        window_print_msg("Comando invalido", RED);
         _getch();
         continue;
       }
 
-      printf("\n[1]-Deck de jogo - [2]-Deck de mesa: ");
+      window_print_msg("[1]-Deck de jogo - [2]-Deck de mesa: ", WHITE);
 
       switch (user_choice_handler()) {
       case C_GAME:
         if (user_dest_handler_game(c.suit, game_decks, c)) {
-          printf("\nDeck invalida");
+          window_print_msg("Deck invalido", RED);
           _getch();
           continue;
         }
@@ -152,11 +156,11 @@ int main() {
         break;
 
       case C_TABLE:
-        printf("\nSelecione um deck de mesa: ");
+        window_print_msg("Selecione um deck de mesa: ", WHITE);
         pd = user_input_handler();
 
         if (user_dest_handler_table(pd, table_decks, c)) {
-          printf("\nDeck invalida\n");
+          window_print_msg("Deck invalido", RED);
           _getch();
           continue;
         }
@@ -176,7 +180,7 @@ int main() {
         break;
 
       case C_ERR:
-        printf("\nComando invalido\n");
+        window_print_msg("Comando invalido", RED);
         _getch();
         continue;
       }
@@ -184,21 +188,20 @@ int main() {
 
     case UI_LOOK:
       if (deck_is_empty(deck)) {
-        printf("\nBaralho vazio!\n");
+        window_print_msg("Baralho vazio!", RED);
         _getch();
         continue;
       }
       c = deck_get_card(deck);
-      printf("\nCarta do topo do baralho: %s de %s\n", cvalue_str_br[c.value],
-             csuit_str_br[c.suit]);
-      printf("Pegar carta? [S]im [N]ao\n");
+      window_deck_peek_handler(c, WHITE, cvalue_str_br, csuit_str_br);
+
       if (user_choice_handler() == C_YES) {
         pile_push(&discard_deck, deck_pop(&deck));
       }
       break;
 
     case UI_INVALID:
-      printf("\nComando invalido\n");
+      window_print_msg("Comando invalido", RED);
       break;
     }
   }

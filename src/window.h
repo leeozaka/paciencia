@@ -43,5 +43,13 @@ uint8_t window_verify();
 void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
                  const char **cval, const char **csuit);
 void window_print_msg(const char *msg, COLORS color);
-
+void window_game_card_highlight(pile_t p, enum CARDS_PLACE place, COLORS color,
+                                const char **cval, const char **csuit);
+void window_table_card_highlight(pile_t p, enum CARDS_PLACE place, COLORS color,
+                                 const char **cval, const char **csuit);
+void window_discard_card_highlight(pile_t p, enum CARDS_PLACE place,
+                                   COLORS color, const char **cval,
+                                   const char **csuit);
+void window_deck_peek_handler(card_t c, COLORS color, const char **cval,
+                              const char **csuit);
 #endif
