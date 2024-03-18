@@ -40,16 +40,16 @@ info_t bootstrap_window() {
       int y = window.screenheight / 2;
       textcolor(RED);
       gotoxy(x, y);
-      cputs(errtext.confirmdialog);
+      cputs(errtext.msg);
       textcolor(WHITE);
       x = (window.screenwidth - strlen(errtext.confirmdialog)) / 2;
       y++;
       gotoxy(x, y);
       cputs(errtext.confirmdialog);
-      x = (window.screenwidth - strlen(errtext.msg)) / 2;
+      x = (window.screenwidth - strlen(errtext.msg2)) / 2;
       y++;
       gotoxy(x, y);
-      cputs(errtext.msg);
+      cputs(errtext.msg2);
       gettextinfo(&window);
       if (_getch() == 'q') {
         system("cls");
