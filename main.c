@@ -41,7 +41,13 @@ int main() {
 
   // main game loop here
   while (1) {
-    int pe, pd;
+
+    // check if the game is over
+    if (game_rule_check(game_decks) == 4) {
+      ui_victory_handler(cvalue_str_br, csuit_str_br);
+    }
+
+    int pe = 0, pd = 0;
     system("cls");
     printf("[1] Decks de jogo\n");
 
@@ -82,6 +88,12 @@ int main() {
 
     // event handler
     switch (user_get_input()) {
+    case UI_CHEAT:
+      printf("\nCheat code\n");
+      ui_cheat_handler(game_decks);
+      _getch();
+      continue;
+
     case UI_EXIT:
       exit(1);
       break;
@@ -98,7 +110,7 @@ int main() {
         if (user_game_card_handler(pe, game_decks)) {
           printf("\nDeck invalido\n");
           _getch();
-          break;
+          continue;
         }
 
         // store the card to be moved
@@ -115,7 +127,7 @@ int main() {
         if (user_table_card_handler(pe, table_decks)) {
           printf("\nDeck invalido\n");
           _getch();
-          break;
+          continue;
         }
 
         // store the card to be moved
@@ -127,45 +139,40 @@ int main() {
 
       case DECK_DISCARD:
         if (pile_empty(&discard_deck)) {
-          printf("Baralho de descarte vazio!\n");
+          printf("\nBaralho de descarte vazio!\n");
           _getch();
-          break;
+          continue;
         }
 
         c = pile_peek(discard_deck);
         break;
 
       case DECK_ERR:
-        break;
-
       default:
-        printf("Comando invalido\n");
+        printf("\nComando invalido\n");
         _getch();
-        break;
+        continue;
       }
 
       printf("\n[1]-Deck de jogo - [2]-Deck de mesa: ");
 
       switch (user_choice_handler()) {
       case C_GAME:
-        printf("\nSelecione um deck de jogo: ");
-        pd = user_input_handler();
-
-        if (user_dest_handler_game(pd, game_decks, c)) {
-          printf("Deck invalida\n");
+        if (user_dest_handler_game(c.suit, game_decks, c)) {
+          printf("\nDeck invalida");
           _getch();
-          break;
+          continue;
         }
 
         switch (n) {
         case DECK_GAME:
-          pile_push(&game_decks[pd], pile_pop(&game_decks[pe]));
+          pile_push(&game_decks[c.suit], pile_pop(&game_decks[pe]));
           break;
         case DECK_TABLE:
-          pile_push(&game_decks[pd], pile_pop(&table_decks[pe]));
+          pile_push(&game_decks[c.suit], pile_pop(&table_decks[pe]));
           break;
         case DECK_DISCARD:
-          pile_push(&game_decks[pd], pile_pop(&discard_deck));
+          pile_push(&game_decks[c.suit], pile_pop(&discard_deck));
           break;
         }
 
@@ -178,7 +185,7 @@ int main() {
         if (user_dest_handler_table(pd, table_decks, c)) {
           printf("\nDeck invalida\n");
           _getch();
-          break;
+          continue;
         }
 
         switch (n) {
@@ -196,17 +203,17 @@ int main() {
         break;
 
       case C_ERR:
-        printf("Comando invalido\n");
+        printf("\nComando invalido\n");
         _getch();
-        break;
+        continue;
       }
       break;
 
     case UI_LOOK:
       if (deck_is_empty(deck)) {
-        printf("Baralho vazio!\n");
+        printf("\nBaralho vazio!\n");
         _getch();
-        break;
+        continue;
       }
       c = deck_get_card(deck);
       printf("\nCarta do topo do baralho: %s de %s\n", cvalue_str_br[c.value],
@@ -218,17 +225,9 @@ int main() {
       break;
 
     case UI_INVALID:
-      printf("Comando invalido\n");
-      break;
-    }
-
-    // check if the game is over
-    if (game_rule_check(game_decks) == 4) {
-      printf("Voce venceu!\n");
+      printf("\nComando invalido\n");
       break;
     }
   }
-
-  _getch();
   return 0;
 }

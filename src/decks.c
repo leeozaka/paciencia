@@ -1,6 +1,8 @@
 #include "decks.h"
 #include "cards.h"
+
 #include <stdlib.h>
+#include <time.h>
 
 void deck_init(deck_t *deck) {
   int i = 0;
@@ -16,6 +18,8 @@ void deck_init(deck_t *deck) {
 }
 
 void deck_shuffle(deck_t *deck) {
+  srand(time(NULL));
+
   for (int i = 0; i < CARD_COUNT; i++) {
     int j = rand() % CARD_COUNT;
     card_t t = deck->card[i];

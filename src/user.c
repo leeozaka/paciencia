@@ -1,4 +1,5 @@
 #include "user.h"
+#include "cards.h"
 #include "decks.h"
 #include "piles.h"
 
@@ -47,6 +48,8 @@ int user_get_input() {
     return UI_PICK;
   case 'l':
     return UI_LOOK;
+  case 'x':
+    return UI_CHEAT;
   default:
     return UI_INVALID;
   }
@@ -94,7 +97,7 @@ inline uint8_t user_dest_handler_game(int pd, pile_t *game_decks, card_t c) {
     return 1;
 
   if (pile_empty(&game_decks[pd]))
-    return 0;
+    return c.value == ACE ? 0 : 1;
 
   if (c.value > pile_peek(game_decks[pd]).value)
     return 0;
