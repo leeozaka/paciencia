@@ -1,6 +1,7 @@
 #include "game.h"
 #include "cards.h"
 #include "piles.h"
+#include "window.h"
 
 #include <stdlib.h>
 

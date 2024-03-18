@@ -6,15 +6,13 @@
 
 // Leonardo Neves, 262310406
 
-#include <conio.h>
-#include <stdio.h>
-
 // #include "src/c.h"
 #include "src/cards.h"
 #include "src/decks.h"
 #include "src/game.h"
 #include "src/piles.h"
 #include "src/user.h"
+#include "src/window.h"
 
 const char *cvalue_str_br[] = {"AS",     "DOIS", "TRES", "QUATRO", "CINCO",
                                "SEIS",   "SETE", "OITO", "NOVE",   "DEZ",
@@ -42,10 +40,18 @@ int main() {
   // main game loop here
   while (1) {
 
+    // check if the window is valid
+    if (window_verify())
+      bootstrap_window();
+
     // check if the game is over
     if (game_rule_check(game_decks) == 4) {
       ui_victory_handler(cvalue_str_br, csuit_str_br);
     }
+
+    // screen update here
+    window_draw();
+    _getch();
 
     int pe = 0, pd = 0;
     system("cls");
@@ -96,7 +102,6 @@ int main() {
 
     case UI_EXIT:
       exit(1);
-      break;
 
     // user input pick
     case UI_PICK:
