@@ -13,6 +13,7 @@
 #include "src/piles.h"
 #include "src/user.h"
 #include "src/window.h"
+#include <locale.h>
 
 const char *cvalue_str_br[] = {"AS",     "DOIS", "TRES", "QUATRO", "CINCO",
                                "SEIS",   "SETE", "OITO", "NOVE",   "DEZ",
@@ -41,7 +42,7 @@ int main() {
   while (1) {
 
     // check if the window is valid
-    if (window_verify())
+    if (!window_verify())
       bootstrap_window();
 
     // check if the game is over
@@ -50,7 +51,8 @@ int main() {
     }
 
     // screen update here
-    window_draw();
+    window_draw(table_decks, game_decks, &discard_deck, cvalue_str_br_short,
+                csuit_str_br_short);
     _getch();
 
     int pe = 0, pd = 0;

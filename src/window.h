@@ -2,6 +2,8 @@
 #define WINDOW_H
 
 #include "c.h"
+#include "decks.h"
+#include "piles.h"
 #include <stdint.h>
 
 enum CARDS_PLACE {
@@ -33,6 +35,7 @@ typedef struct CARD_SIZE {
 
 info_t bootstrap_window();
 uint8_t window_verify();
-void window_draw();
+void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
+                 const char **cval, const char **csuit);
 
 #endif
