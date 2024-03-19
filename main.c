@@ -56,7 +56,7 @@ int main() {
                 csuit_str_br_short);
 
     int pe = 0, pd = 0;
-    window_print_msg("Comandos: [M]over O[l]har [Q]uit: ", WHITE);
+    window_print_msg("Comandos: [M]over O[l]har [Q]uit: ", BLACK);
 
     // event handler
     switch (user_get_input()) {
@@ -74,11 +74,11 @@ int main() {
     case UI_PICK:
       window_print_msg(
           "[1] Deck de jogo, [2] Deck de mesa, [3] Baralho de descarte: ",
-          WHITE);
+          BLACK);
       uint8_t n = user_deck_input_handler();
       switch (n) {
       case DECK_GAME:
-        window_print_msg("Selecione um deck de jogo: ", WHITE);
+        window_print_msg("Selecione um deck de jogo: ", BLACK);
         pe = user_input_handler();
 
         if (user_game_card_handler(pe, game_decks)) {
@@ -95,7 +95,7 @@ int main() {
         break;
 
       case DECK_TABLE:
-        window_print_msg("Selecione um deck de mesa: ", WHITE);
+        window_print_msg("Selecione um deck de mesa: ", BLACK);
         pe = user_input_handler();
 
         if (user_table_card_handler(pe, table_decks)) {
@@ -131,7 +131,7 @@ int main() {
         continue;
       }
 
-      window_print_msg("[1]-Deck de jogo - [2]-Deck de mesa: ", WHITE);
+      window_print_msg("[1]-Deck de jogo - [2]-Deck de mesa: ", BLACK);
 
       switch (user_choice_handler()) {
       case C_GAME:
@@ -156,7 +156,7 @@ int main() {
         break;
 
       case C_TABLE:
-        window_print_msg("Selecione um deck de mesa: ", WHITE);
+        window_print_msg("Selecione um deck de mesa: ", BLACK);
         pd = user_input_handler();
 
         if (user_dest_handler_table(pd, table_decks, c)) {
@@ -193,7 +193,7 @@ int main() {
         continue;
       }
       c = deck_get_card(deck);
-      window_deck_peek_handler(c, WHITE, cvalue_str_br, csuit_str_br);
+      window_deck_peek_handler(c, BLACK, cvalue_str_br, csuit_str_br);
 
       if (user_choice_handler() == C_YES) {
         pile_push(&discard_deck, deck_pop(&deck));

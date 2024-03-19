@@ -392,6 +392,6 @@ void window_deck_peek_handler(card_t c, COLORS color, const char **cval,
   gotoxy(wt.x + padding_x, wt.y + padding_y);
 
   printf("Carta do topo do baralho: %s de %s, ", cval[c.value], csuit[c.suit]);
-  textcolor(BLUE);
+  textbackground(YELLOW);
   printf("Pegar carta? [S]im [N]ao");
 }
