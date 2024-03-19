@@ -5,6 +5,7 @@
 // que esta fazendo
 
 // Leonardo Neves, 262310406
+// Isabella Ferreira Arvoredo, 262217287
 
 #include "src/c.h"
 #include "src/cards.h"
