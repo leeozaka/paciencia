@@ -1,9 +1,11 @@
 #include "game.h"
+#include "c.h"
 #include "cards.h"
 #include "piles.h"
 #include "window.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 uint8_t game_rule_check(pile_t *game_pile) {
   uint8_t sq = 0;
@@ -43,13 +45,70 @@ void ui_cheat_handler(pile_t game_decks[]) {
   }
 }
 
-void ui_victory_handler(const char **cvstr, const char **csstr) {
+void ui_victory_handler() {
   system("cls");
-  printf("Voce venceu! (y)\n");
+
+  const char *va[] = {
+      "                                        .",
+      "             . .                     -:-             .  .  .",
+      "            .'.:,'.        .  .  .     ' .           . \\ | / .",
+      "            .'.;.`.       ._. ! ._.       \\          .__\\:/__.",
+      "             `,:.'         ._\\!/_.                     .';`.      . ' "
+      ".",
+      "             ,'             . ! .        ,.,      ..======..       .:.",
+      "            ,                 .         ._!_.     ||::: : | .        ',",
+      "     .====.,                  .           ;  .~.===: : : :|   ..===.",
+      "     |.::'||      .=====.,    ..=======.~,   |'|: :|::::::|   "
+      "||:::|=====| ",
+      "  ___| :::|!__.,  |:::::|!_,   |: :: ::|'|l_l|'|:: |:;;:::|___!| ::|: : "
+      ":|",
+      " |: :|::: |:: |!__|; :: |: |===::: :: :|'||_||'| : |: :: :|: : |:: "
+      "|:::::|",
+      " |:::| _::|: :|:::|:===:|::|:::|:===F=:|'!/|\\!''|::F|:====:|::_:|: "
+      ":|::__:|",
+      " !_[]![_]_!_[]![]_!_[__]![]![_]![_][I_]!//"
+      "_:_\\![]I![_][_]!_[_]![]_!_[__]!",
+      " -----------------------------------'---''''```---'---------------------"
+      "--",
+      " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |= _ _:_ _ =| _ _ _ _ _ _ _ _ _ _ "
+      "_ _",
+      "                                     |=    :    =|                      "
+      "  ",
+      "_____________________________________L___________J______________________"
+      "__",
+      "- "
+      "------------------------------------------------------------------------"
+      "-"};
+
+  info_t w;
+  info_t expect = {0, 0, 0, 0, 131, 35};
+  gettextinfo(&w);
+
+  int draw_x = (expect.screenwidth - strlen(va[17])) / 2;
+  int draw_y = (expect.screenheight - 17) / 2;
+
+  int padding_x = 0;
+  int padding_y = 0;
+
+  padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
+  padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
+
+  textcolor(PURPLE);
+
   for (int i = 0; i < 4; i++) {
-    printf("Deck %d: %s de %s\n", i + 1, cvstr[KING], csstr[i]);
+    flashbackground(GREEN, 200);
   }
 
-  system("pause");
+  for (int i = 0; i < 17; i++) {
+    gotoxy(draw_x + padding_x, draw_y + padding_y + i);
+    cputs(va[i]);
+  }
+
+  char *msg = "Parabens! Voce venceu!";
+  gotoxy(((expect.screenwidth - strlen(msg)) / 2) + padding_x,
+         draw_y + padding_y + 17);
+  cputs(msg);
+
+  _getch();
   exit(0);
 }

@@ -28,11 +28,6 @@ typedef struct CARD_PLACING {
   uint8_t y;
 } card_placing_t;
 
-typedef struct CARD_SIZE {
-  uint8_t width;
-  uint8_t height;
-} card_size_t;
-
 typedef struct WINDOW_TEXT_POS {
   uint8_t x;
   uint8_t y;

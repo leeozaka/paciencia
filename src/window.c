@@ -20,8 +20,6 @@ const card_placing_t cards[] = {{6, 2},   {68, 2},  {82, 2},  {96, 2},
                                 {110, 2}, {28, 11}, {41, 11}, {54, 11},
                                 {67, 11}, {80, 11}, {93, 11}, {106, 11}};
 
-const card_size_t card_size = {12, 6};
-
 const struct errtext {
   char *msg;
   char *confirmdialog;
@@ -69,7 +67,7 @@ info_t bootstrap_window() {
   return window;
 }
 
-uint8_t window_verify() {
+inline uint8_t window_verify() {
   info_t w;
 
   gettextinfo(&w);
@@ -117,6 +115,11 @@ void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
     gotoxy(i + padding_x, padding_y + expect.screenheight);
     fputc(ROW, stdout);
   }
+  // draw table decks numbers
+  for (int i = 0; i < 7; i++) {
+    gotoxy(cards[i + 5].x + padding_x + 4, cards[i + 5].y + padding_y - 1);
+    printf("[%d]", i + 1);
+  }
 
   // draw cards: discard_deck
   int i = 0;
@@ -126,7 +129,26 @@ void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
     printf("Empty");
   } else {
     c = pile_peek(*discard_deck);
-    printf("%s      %s", cval[c.value], csuit[c.suit]);
+    gotoxy(cards[i].x + padding_x, cards[i].y + padding_y);
+    printf("%c%c%c%c%c%c%c%c%c%c%c", TL, ROW, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+           ROW, TR);
+    gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 1);
+    printf("%c%s      %s %c", COL, cval[c.value], csuit[c.suit], COL);
+    gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 2);
+    printf("%c         %c", COL, COL);
+    gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 3);
+    printf("%c         %c", COL, COL);
+
+    gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 4);
+    printf("%c         %c", COL, COL);
+
+    gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 5);
+    printf("%c         %c", COL, COL);
+
+    gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 6);
+    printf("%c%c%c%c%c%c%c%c%c%c%c", BL, ROW, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+           ROW, BR);
+    // printf("%s      %s", cval[c.value], csuit[c.suit]);
   }
 
   // draw cards: game_decks
@@ -136,7 +158,25 @@ void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
       printf("Empty");
     } else {
       c = pile_peek(game_decks[i - 1]);
-      printf("%s      %s", cval[c.value], csuit[c.suit]);
+      gotoxy(cards[i].x + padding_x, cards[i].y + padding_y);
+      printf("%c%c%c%c%c%c%c%c%c%c%c", TL, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+             ROW, ROW, TR);
+      gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 1);
+      printf("%c%s      %s %c", COL, cval[c.value], csuit[c.suit], COL);
+      gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 2);
+      printf("%c         %c", COL, COL);
+      gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 3);
+      printf("%c         %c", COL, COL);
+
+      gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 4);
+      printf("%c         %c", COL, COL);
+
+      gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 5);
+      printf("%c         %c", COL, COL);
+
+      gotoxy(cards[i].x + padding_x, cards[i].y + padding_y + 6);
+      printf("%c%c%c%c%c%c%c%c%c%c%c", BL, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+             ROW, ROW, BR);
     }
   }
 
@@ -152,9 +192,33 @@ void window_draw(pile_t *table_decks, pile_t *game_decks, pile_t *discard_deck,
         printf("%c%c%c%c%c%c%c%c%c%c%c", TL, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
                ROW, ROW, TR);
       }
-      gotoxy(cards[i].x + padding_x + 1,
+
+      gotoxy(cards[i].x + padding_x,
              cards[i].y + padding_y + game_decks[i - 1].head);
-      printf("%s      %s", cval[c.value], csuit[c.suit]);
+      printf("%c%c%c%c%c%c%c%c%c%c%c", TL, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+             ROW, ROW, TR);
+      gotoxy(cards[i].x + padding_x,
+             cards[i].y + padding_y + 1 + game_decks[i - 1].head);
+      printf("%c%s      %s %c", COL, cval[c.value], csuit[c.suit], COL);
+      gotoxy(cards[i].x + padding_x,
+             cards[i].y + padding_y + 2 + game_decks[i - 1].head);
+      printf("%c         %c", COL, COL);
+      gotoxy(cards[i].x + padding_x,
+             cards[i].y + padding_y + 3 + game_decks[i - 1].head);
+      printf("%c         %c", COL, COL);
+
+      gotoxy(cards[i].x + padding_x,
+             cards[i].y + padding_y + 4 + game_decks[i - 1].head);
+      printf("%c         %c", COL, COL);
+
+      gotoxy(cards[i].x + padding_x,
+             cards[i].y + padding_y + 5 + game_decks[i - 1].head);
+      printf("%c         %c", COL, COL);
+
+      gotoxy(cards[i].x + padding_x,
+             cards[i].y + padding_y + 6 + game_decks[i - 1].head);
+      printf("%c%c%c%c%c%c%c%c%c%c%c", BL, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+             ROW, ROW, BR);
     }
   }
   gotoxy(padding_x + 1, padding_y + expect.screenheight - 1);
@@ -164,21 +228,32 @@ void window_print_msg(const char *msg, COLORS color) {
   info_t w;
   gettextinfo(&w);
 
-  wtext wt = {2, 33};
+  wtext wt = {1, 34};
 
   uint8_t padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
   uint8_t padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
 
   // clearline
-  for (int i = wt.x + padding_x; i < expect.screenwidth; i++) {
-    textbackground(DARK_GREY);
-    gotoxy(i + padding_x, 33 + padding_y);
-    fputc(' ', stdout);
-  }
+  // for (int i = wt.x + padding_x; i < expect.screenwidth; i++) {
+  //   textcolor(BLACK);
+  //   textbackground(DARK_GREY);
+  //   gotoxy(i + padding_x, wt.y + padding_y);
+  //   putc(32, stdout);
+  // }
+
+  // em minha defesa isso aqui é mto feio porém é muito mais
+  // rapido em tempo de execucao
+  gotoxy(wt.x + padding_x, wt.y + padding_y);
+  textbackground(DARK_GREY);
+  printf("                                                                     "
+         "                                                             ");
 
   textcolor(color);
   gotoxy(wt.x + padding_x, wt.y + padding_y);
-  cputs(msg);
+  printf("%s", msg);
+
+  textcolor(WHITE);
+  textbackground(BLACK);
 }
 
 void window_game_card_highlight(pile_t p, enum CARDS_PLACE place, COLORS color,
@@ -193,7 +268,27 @@ void window_game_card_highlight(pile_t p, enum CARDS_PLACE place, COLORS color,
 
   gotoxy(cards[place].x + padding_x, cards[place].y + padding_y);
   textcolor(color);
-  printf("%s      %s", cval[c.value], csuit[c.suit]);
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y);
+  printf("%c%c%c%c%c%c%c%c%c%c%c", TL, ROW, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+         ROW, TR);
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 1);
+  printf("%c%s      %s %c", COL, cval[c.value], csuit[c.suit], COL);
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 2);
+  printf("%c         %c", COL, COL);
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 3);
+  printf("%c         %c", COL, COL);
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 4);
+  printf("%c         %c", COL, COL);
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 5);
+  printf("%c         %c", COL, COL);
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 6);
+  printf("%c%c%c%c%c%c%c%c%c%c%c", BL, ROW, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+         ROW, BR);
+
   textcolor(WHITE);
 }
 
@@ -209,7 +304,30 @@ void window_table_card_highlight(pile_t p, enum CARDS_PLACE place, COLORS color,
 
   gotoxy(cards[place].x + padding_x + 1, cards[place].y + padding_y + p.head);
   textcolor(color);
-  printf("%s      %s", cval[c.value], csuit[c.suit]);
+
+  // printf("%s      %s", cval[c.value], csuit[c.suit]);
+  //
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + p.head);
+  printf("%c%c%c%c%c%c%c%c%c%c%c", TL, ROW, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+         ROW, TR);
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 1 + p.head);
+  printf("%c%s      %s %c", COL, cval[c.value], csuit[c.suit], COL);
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 2 + p.head);
+  printf("%c         %c", COL, COL);
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 3 + p.head);
+  printf("%c         %c", COL, COL);
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 4 + p.head);
+  printf("%c         %c", COL, COL);
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 5 + p.head);
+  printf("%c         %c", COL, COL);
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 6 + p.head);
+  printf("%c%c%c%c%c%c%c%c%c%c%c", BL, ROW, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+         ROW, BR);
+
   textcolor(WHITE);
 }
 
@@ -224,10 +342,28 @@ void window_discard_card_highlight(pile_t p, enum CARDS_PLACE place,
   uint8_t padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
   uint8_t padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
 
-  gotoxy(cards[place].x + padding_x + 1, cards[place].y + padding_y);
   textcolor(color);
-  printf("%s      %s", cval[c.value], csuit[c.suit]);
-  textcolor(WHITE);
+  textbackground(BLACK);
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y);
+  printf("%c%c%c%c%c%c%c%c%c%c%c", TL, ROW, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+         ROW, TR);
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 1);
+  printf("%c%s      %s %c", COL, cval[c.value], csuit[c.suit], COL);
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 2);
+  printf("%c         %c", COL, COL);
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 3);
+  printf("%c         %c", COL, COL);
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 4);
+  printf("%c         %c", COL, COL);
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 5);
+  printf("%c         %c", COL, COL);
+
+  gotoxy(cards[place].x + padding_x, cards[place].y + padding_y + 6);
+  printf("%c%c%c%c%c%c%c%c%c%c%c", BL, ROW, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
+         ROW, BR);
 }
 
 void window_deck_peek_handler(card_t c, COLORS color, const char **cval,
@@ -235,22 +371,27 @@ void window_deck_peek_handler(card_t c, COLORS color, const char **cval,
   info_t w;
   gettextinfo(&w);
 
-  wtext wt = {2, 33};
+  wtext wt = {1, 34};
 
   uint8_t padding_x = w.screenwidth > 130 ? (w.screenwidth - 130) / 2 : 0;
   uint8_t padding_y = w.screenwidth > 34 ? (w.screenheight - 34) / 2 : 0;
 
   // clearline
-  for (int i = wt.x + padding_x; i < expect.screenwidth; i++) {
-    textbackground(DARK_GREY);
-    gotoxy(i + padding_x, 33 + padding_y);
-    fputc(' ', stdout);
-  }
+  // for (int i = wt.x + padding_x; i < expect.screenwidth; i++) {
+  //   textbackground(DARK_GREY);
+  //   gotoxy(i + padding_x, 33 + padding_y);
+  //   fputc(' ', stdout);
+  // }
+
+  gotoxy(wt.x + padding_x, wt.y + padding_y);
+  textbackground(DARK_GREY);
+  printf("                                                                     "
+         "                                                             ");
 
   textcolor(color);
   gotoxy(wt.x + padding_x, wt.y + padding_y);
 
-  printf("Carta do topo do baralho: %s de %s", cval[c.value], csuit[c.suit]);
-  gotoxy(wt.x + padding_x, wt.y + 1 + padding_y);
-  printf("Pegar carta? [S]im [N]ao\n");
+  printf("Carta do topo do baralho: %s de %s, ", cval[c.value], csuit[c.suit]);
+  textcolor(BLUE);
+  printf("Pegar carta? [S]im [N]ao");
 }

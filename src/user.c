@@ -9,7 +9,7 @@
 
 uint8_t user_deck_input_handler() {
   fflush(stdin);
-  switch (tolower(_getche())) {
+  switch (tolower(_getch())) {
   case '1':
     return DECK_GAME;
   case '2':
@@ -24,7 +24,7 @@ uint8_t user_deck_input_handler() {
 // get user input and return the value fixed
 uint8_t user_choice_handler() {
   fflush(stdin);
-  switch (tolower(_getche())) {
+  switch (tolower(_getch())) {
   case '1':
     return C_GAME;
   case '2':
@@ -41,7 +41,7 @@ uint8_t user_choice_handler() {
 // get user input and return the value fixed
 int user_get_input() {
   fflush(stdin);
-  switch (tolower(_getche())) {
+  switch (tolower(_getch())) {
   case 'q':
     return UI_EXIT;
   case 'm':
@@ -60,7 +60,7 @@ inline int8_t user_input_handler() {
   uint8_t i;
   fflush(stdin);
 
-  i = _getche();
+  i = _getch();
   if (!isdigit(i)) {
     return -1;
   }

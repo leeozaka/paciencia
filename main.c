@@ -48,7 +48,7 @@ int main() {
 
     // check if the game is over
     if (game_rule_check(game_decks) == 4) {
-      ui_victory_handler(cvalue_str_br, csuit_str_br);
+      ui_victory_handler();
     }
 
     // screen update here
