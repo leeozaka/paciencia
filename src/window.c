@@ -60,6 +60,7 @@ info_t bootstrap_window() {
         system("cls");
         exit(1);
       }
+      gettextinfo(&window);
     }
   } while (window.screenwidth < expect.screenwidth ||
            window.screenheight < expect.screenheight);
