@@ -99,7 +99,7 @@ inline uint8_t user_dest_handler_game(int pd, pile_t *game_decks, card_t c) {
   if (pile_empty(&game_decks[pd]))
     return c.value == ACE ? 0 : 1;
 
-  if (c.value > pile_peek(game_decks[pd]).value)
+  if (c.value - 1 == pile_peek(game_decks[pd]).value)
     return 0;
 
   return 1;
