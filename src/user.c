@@ -112,7 +112,7 @@ inline uint8_t user_dest_handler_table(int pd, pile_t *table_decks, card_t c) {
   if (pile_empty(&table_decks[pd]))
     return 0;
 
-  if (c.value - 1 == pile_peek(table_decks[pd]).value)
+  if (c.value + 1 == pile_peek(table_decks[pd]).value)
     return 0;
 
   return 1;
